@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>So What Is a Primate? · Read Aloud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6eedb; --paper2:#efe3c6; --ink:#2f2a22; --muted:#6b5f4b;
+  --green:#3f6b3a; --green-d:#2c4d29; --kraft:#b98a55; --kraft-d:#8a6236;
+  --hl:#ffe36b; --hl-edge:#f2c200; --vocab:#2f6db5; --card:#fffaf0;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper);
+  background-image:repeating-linear-gradient(0deg,transparent 0 33px,rgba(120,100,60,.08) 33px 34px);
+  color:var(--ink); font-family:'Lexend',system-ui,sans-serif; font-size:19px; line-height:1.75;
+  padding-bottom:150px; -webkit-tap-highlight-color:transparent;
+}
+header{
+  background:linear-gradient(135deg,var(--green) 0%,var(--green-d) 100%);
+  color:#fff; padding:18px 16px 26px; text-align:center; position:relative;
+  border-bottom:6px dashed var(--kraft);
+}
+.logo{max-width:220px;width:55%;display:block;margin:0 auto 8px;background:#fff;border-radius:14px;padding:6px}
+.tag{display:inline-block;font-family:'Kalam',cursive;background:var(--kraft);color:#fff;border-radius:999px;padding:2px 14px;font-size:16px;letter-spacing:.5px}
+h1{font-family:'Kalam',cursive;font-size:2.4rem;line-height:1.1;margin:10px 0 4px}
+.byline{opacity:.9;font-size:1rem}
+.how{max-width:760px;margin:18px auto 0;padding:0 16px}
+.how div{background:var(--card);border:2px solid var(--kraft);border-radius:14px;padding:12px 16px;font-size:.95rem;line-height:1.5;box-shadow:3px 3px 0 var(--kraft)}
+main{max-width:760px;margin:0 auto;padding:6px 16px}
+h2{font-family:'Kalam',cursive;color:var(--green-d);font-size:1.6rem;margin:28px 0 4px;border-bottom:2px solid var(--kraft);display:inline-block}
+.para{position:relative;margin:14px 0;padding-left:38px}
+.pnum{position:absolute;left:0;top:4px;width:28px;height:28px;border-radius:50%;background:var(--kraft);color:#fff;font-size:.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;line-height:1}
+.s{cursor:pointer;border-radius:6px;padding:2px 1px;transition:background .2s,box-shadow .2s;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.s:hover{background:rgba(255,227,107,.35)}
+.s.on{background:var(--hl);box-shadow:0 0 0 2px var(--hl-edge)}
+.s.read{color:#4a4336}
+.h .s{cursor:pointer}
+.v{color:var(--vocab);font-weight:600;text-decoration:underline dotted 2px;text-underline-offset:4px;cursor:help}
+.divider{text-align:center;color:var(--kraft-d);font-family:'Kalam',cursive;margin:26px 0 0;font-size:1.2rem}
+/* controls */
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:4px solid var(--green);box-shadow:0 -4px 16px rgba(0,0,0,.12);padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:20}
+.bar-in{max-width:760px;margin:0 auto}
+.prog{height:10px;background:var(--paper2);border-radius:99px;overflow:hidden;margin-bottom:8px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),#7fb35a);transition:width .3s}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+.btn{font-family:'Lexend',sans-serif;border:none;border-radius:14px;min-height:52px;padding:0 16px;font-size:1rem;font-weight:600;cursor:pointer;background:var(--paper2);color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.btn:active{transform:scale(.96)}
+.btn.play{background:var(--green);color:#fff;min-width:130px;justify-content:center;font-size:1.1rem}
+.speed{display:flex;align-items:center;gap:6px;font-size:.9rem;color:var(--muted)}
+.speed input{width:110px;accent-color:var(--green)}
+.count{font-size:.85rem;color:var(--muted);text-align:center;margin-top:4px}
+/* popups */
+.vcard{position:fixed;left:50%;transform:translateX(-50%);bottom:170px;width:min(92vw,440px);background:#fff;border:3px solid var(--vocab);border-radius:18px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:30;display:none;line-height:1.45}
+.vcard.show{display:block}
+.vcard b{font-size:1.3rem;color:var(--vocab)}
+.vcard .pr{color:var(--muted);font-size:.95rem}
+.vcard .row{justify-content:flex-start;margin-top:10px}
+.modal{position:fixed;inset:0;background:rgba(30,40,25,.55);display:none;align-items:center;justify-content:center;z-index:40;padding:16px}
+.modal.show{display:flex}
+.mbox{background:var(--card);border:4px solid var(--green);border-radius:22px;max-width:420px;width:100%;padding:22px;text-align:center;box-shadow:6px 6px 0 var(--kraft)}
+.mbox h3{font-family:'Kalam',cursive;font-size:1.9rem;margin:0 0 6px;color:var(--green-d)}
+.mbox p{margin:0 0 14px;line-height:1.5}
+.mbox .row{gap:10px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+footer{text-align:center;color:var(--muted);font-size:.85rem;margin:30px 0 0}
+@media (max-width:520px){
+  body{font-size:17px} h1{font-size:2rem} .btn{padding:0 12px} .speed input{width:80px}
+}
+</style>
+</head>
+<body>
+<header>
+  <img class="logo" src="logo.png" alt="The Literacy Locksmith" onerror="this.style.display='none'">
+  <span class="tag">🔊 Interactive Read Aloud · Science Article</span>
+  <h1>So What Is a Primate?</h1>
+  <div class="byline">by Faith Hickman Brynie</div>
+</header>
+
+<div class="how"><div>
+  <b>How to use:</b> Tap <b>▶ Read to Me</b> and follow the yellow highlight. Tap any sentence to hear it. Tap a <span class="v" style="cursor:default">blue word</span> to learn what it means. Your spot is saved automatically. 🐒
+</div></div>
+
+<main id="text"></main>
+<footer>Read-aloud tool by Mrs. Rees</footer>
+
+<div class="bar"><div class="bar-in">
+  <div class="prog"><i id="progFill"></i></div>
+  <div class="row">
+    <button class="btn" id="backBtn" aria-label="Previous sentence">⏮ Back</button>
+    <button class="btn play" id="playBtn">▶ Read to Me</button>
+    <button class="btn" id="nextBtn" aria-label="Next sentence">Next ⏭</button>
+    <label class="speed">🐢<input type="range" id="speed" min="0.6" max="1.3" step="0.05" value="0.9">🐇</label>
+    <button class="btn" id="restartBtn">↺ Start Over</button>
+  </div>
+  <div class="count" id="count"></div>
+</div></div>
+
+<div class="vcard" id="vcard">
+  <b id="vWord"></b> <span class="pr" id="vPr"></span>
+  <div id="vDef"></div>
+  <div class="row">
+    <button class="btn" id="vHear">🔊 Hear it</button>
+    <button class="btn" id="vClose">Close</button>
+  </div>
+</div>
+
+<div class="modal" id="resumeModal"><div class="mbox">
+  <h3>Welcome back! 🐵</h3>
+  <p id="resumeText">Want to keep reading where you left off?</p>
+  <div class="row">
+    <button class="btn play" id="resumeYes">Keep Going</button>
+    <button class="btn" id="resumeNo">Start Over</button>
+  </div>
+</div></div>
+
+<div class="modal" id="doneModal"><div class="mbox">
+  <h3>You did it! 🎉</h3>
+  <p>You finished <b>"So What Is a Primate?"</b><br>Great listening, explorer!</p>
+  <div class="row">
+    <button class="btn play" id="againBtn">Read It Again</button>
+    <button class="btn" id="doneClose">Close</button>
+  </div>
+</div></div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+/* ---------- TEXT ---------- */
+const DOC = [
+  {h:"Background"},
+  {p:null, s:[
+    "Much of what we know about primates we owe to the scientists who have studied them.",
+    "Some of these scientists, known as primatologists, study primates in their natural habitat.",
+    "Others study primates in labs, in part to find out more about their biological traits.",
+    "This article addresses some of the similarities and differences in traits among the members of this group of mammals."]},
+  {h:"Introduction"},
+  {p:1, s:[
+    "Just as cats, lizards, birds, spiders, and fish are all members of the animal kingdom, so are people.",
+    "We humans like to think of ourselves as special, and in many ways we are.",
+    "However, we also have a great deal in common with other animals.",
+    "As a science writer, I’m fascinated by these similarities and differences and seek to understand them more deeply.",
+    "The more we know about our kinship with all animals, the better guardians of our planet we will be."]},
+  {div:true},
+  {p:2, s:[
+    "What do you have in common with the aye-aye, sifaka, siamang, and potto?",
+    "If you said your collarbone, you’re probably a primatologist—a person who studies primates.",
+    "If you’re not, read on."]},
+  {p:3, s:[
+    "Just like those animals with the weird names, you belong to the group of mammals called primates.",
+    "(By the way, the group also includes the more commonly known monkeys, chimps, and gorillas.)",
+    "Among other things, it’s the structure of your shoulder that earns you membership in that club.",
+    "In primates, the upper arms are linked to the chest by the collarbone (also called the clavicle).",
+    "That construction allows you and other primates to do something most mammals can’t: hang by your arms.",
+    "Watch kids crossing a jungle gym hand-over-hand.",
+    "They share that ability with monkeys and apes, but don’t expect rabbits, goats, or polar bears to perform such a feat!"]},
+  {p:4, s:[
+    "The ability to swing isn’t the only adaptation to life in the trees, where most primates live.",
+    "Eyes face forward, encased in bony sockets.",
+    "That lets the view from one eye overlap the other.",
+    "The result is three-dimensional or stereoscopic vision—the perfect tool for judging both depth and distance."]},
+  {p:5, s:[
+    "Primates have agile arms and legs.",
+    "Apes have no tails, but monkeys use their long, flexible tails for balance.",
+    "Many New World monkeys have prehensile tails that wrap around branches and act as an extra hand or foot.",
+    "Some can support their entire weight using only their tails."]},
+  {p:6, s:[
+    "Primate fingers are flexible with sensitive ends, giving them a keen sense of touch.",
+    "Except for marmosets and tamarins, all primates have flat fingernails and toenails instead of claws.",
+    "Many primates, like humans, have a thumb that can bend to meet the other fingers or toes.",
+    "This opposable thumb makes grasping small objects easy and paves the way for using and making tools.",
+    "Tool use is aided by another very special primate feature—a large brain in relation to body size."]},
+  {p:7, s:[
+    "Many primates, especially those that are diurnal (active during the day), live in social groups.",
+    "Some of the smaller, nocturnal (active at night) primates live alone.",
+    "Like all mammals, primates have hair or fur.",
+    "They nurse their young with milk from mammary glands.",
+    "Compared to other mammals, however, primates have few offspring, and the babies take a long time to mature."]},
+  {p:8, s:[
+    "That growth and maturation varies greatly among species.",
+    "The largest primate, the lowland gorilla, can achieve an adult weight of up to about 500 pounds.",
+    "The smallest, the pygmy mouse lemur of Madagascar, tips the scales at about one ounce when fully grown."]},
+  {p:9, s:[
+    "Scientists group the more than 200 living species of primates into two main categories.",
+    "The first are the prosimians, or “primitive” primates.",
+    "This group includes lemurs, pottos, lorises, and tarsiers.",
+    "Mostly, the prosimians are small in size.",
+    "They have long whiskers and pointed snouts.",
+    "Their senses of hearing and smell are keen.",
+    "They have moist noses and mobile ears.",
+    "Many are nocturnal and have only black-and-white vision."]},
+  {p:10, s:[
+    "The second group is the anthropoids, which contains nearly three times as many species as the prosimians.",
+    "Anthropoids include monkeys, marmosets, tamarins, siamangs, and gibbons."]},
+  {p:11, s:[
+    "The “Great Apes” are another major group of anthropoids.",
+    "That group includes our closest cousins, the gorilla, chimpanzee, orangutan, and bonobo.",
+    "(Recently, many scientists have also started to classify humans as a fifth species of great ape.)",
+    "Most anthropoids have flat faces, keen color vision, and a relatively poor sense of smell.",
+    "Anthropoids are intelligent and quick to learn.",
+    "Many use and make tools and set up social systems."]},
+  {p:12, s:[
+    "Where’s the single best place to find one-quarter of primate species?",
+    "On the “Red List” of critically endangered, or vulnerable, species published by the International Union for Conservation of Nature and Natural Resources (IUCN).",
+    "Today’s world is a dangerous place for primates, and when we lose them, we’ll lose these amazing creatures—including our closest cousins—forever."]},
+  {p:13, s:[
+    "One of the most dangerous areas for the world’s primates is Madagascar.",
+    "Some species of forest-dwelling lemurs found there live nowhere else in the world, but their homes are nearly all gone.",
+    "Between 1950 and 1985 (say researchers at American University in Washington, D.C.), half of all Madagascar’s forests disappeared, as people cut the trees to grow coffee, mine the earth, and raise cattle.",
+    "Between 1990 and 1995, the island continued to lose nearly 320 acres of its forest land annually, according to estimates from the World Resources Institute."]},
+  {h:"Acknowledgments"},
+  {p:null, s:[
+    "I am grateful to the International Union for Conservation of Nature (IUCN).",
+    "The staff were enormously helpful in my research.",
+    "Thanks also go to graduate students in the Biology department at American University, who helped me better understand the effects of environmental change on primates.",
+    "I am also grateful to the World Resources Institute for providing excellent public information about the threat of extinction in primate populations.",
+    "I consulted their web site and other materials frequently during my research for this article.",
+    "I am also thankful to my editor for her insights and feedback."]}
+];
+
+/* vocabulary: word -> [paragraph number where it is glossed, pronunciation, definition] */
+const VOCAB = {
+  agile:["5","(AJ uhl) adj.","able to move quickly and easily"],
+  prehensile:["5","(pree HEHN suhl) adj.","able to grab or hold something by wrapping around it"],
+  sensitive:["6","(SEHN suh tihv) adj.","able to easily detect stimulation"],
+  keen:["6","(keen) adj.","extremely clear or sharp in perception"],
+  opposable:["6","(uh POH zuh buhl) adj.","able to be placed against one or more of the other fingers on the same hand or foot"],
+  intelligent:["11","(ihn TEL uh juhnt) adj.","able to learn and understand things"]
+};
+
+/* how words should SOUND (display text stays the same) */
+function sayable(t){
+  return t.replace(/IUCN/g,"I. U. C. N.")
+          .replace(/D\.C\./g,"D C")
+          .replace(/aye-aye/g,"eye-eye")
+          .replace(/—/g,", ")
+          .replace(/[“”]/g,"");
+}
+
+/* ---------- BUILD PAGE ---------- */
+const SENTS = [];   // {text, el}
+const main = document.getElementById('text');
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const usedVocab = {};
+
+DOC.forEach(item=>{
+  if(item.h){
+    const h = document.createElement('h2'); h.className='h';
+    const sp = document.createElement('span'); sp.className='s'; sp.textContent=item.h;
+    h.appendChild(sp); main.appendChild(h); addSent(item.h, sp);
+    return;
+  }
+  if(item.div){
+    const d=document.createElement('div'); d.className='divider'; d.textContent='~ 🌿 ~'; main.appendChild(d); return;
+  }
+  const p = document.createElement('p'); p.className='para';
+  if(item.p!==null){ const n=document.createElement('span'); n.className='pnum'; n.textContent=item.p; p.appendChild(n); }
+  item.s.forEach((t,i)=>{
+    const sp = document.createElement('span'); sp.className='s';
+    let html = esc(t);
+    for(const w in VOCAB){
+      if(!usedVocab[w] && VOCAB[w][0]===String(item.p)){
+        const re = new RegExp('\\b('+w+')\\b','i');
+        if(re.test(html)){ html = html.replace(re,'<span class="v" data-w="'+w+'">$1</span>'); usedVocab[w]=true; }
+      }
+    }
+    sp.innerHTML = html;
+    p.appendChild(sp);
+    if(i<item.s.length-1) p.appendChild(document.createTextNode(' '));
+    addSent(t, sp);
+  });
+  main.appendChild(p);
+});
+function addSent(text, el){
+  const i = SENTS.length; SENTS.push({text, el});
+  el.addEventListener('click', e=>{
+    if(e.target.classList.contains('v')) return;
+    hideVocab(); startAt(i);
+  });
+}
+const N = SENTS.length;
+
+/* ---------- SAVE (device storage) ---------- */
+const KEY='rees-primate-readaloud-v1';
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||{} }catch(e){ return {} } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify({idx:cur, speed:+speedEl.value, done:finishedOnce, maxRead})) }catch(e){} }
+
+/* ---------- SPEECH ---------- */
+const synth = window.speechSynthesis;
+let voice=null, cur=0, playing=false, token=0, finishedOnce=false, maxRead=-1;
+const speedEl=document.getElementById('speed');
+const playBtn=document.getElementById('playBtn');
+
+function pickVoice(){
+  if(!synth) return;
+  const vs = synth.getVoices(); if(!vs.length) return;
+  const pref = ["Google US English","Samantha","Ava","Allison","Susan","Zoe","Nicky","Microsoft Aria","Microsoft Jenny"];
+  for(const name of pref){ const v=vs.find(v=>v.name.indexOf(name)===0 && /en[-_]US/i.test(v.lang)); if(v){voice=v;return;} }
+  voice = vs.find(v=>/en[-_]US/i.test(v.lang)) || vs.find(v=>/^en/i.test(v.lang)) || null;
+}
+if(synth){ pickVoice(); synth.onvoiceschanged = pickVoice; }
+
+function mark(i){
+  SENTS.forEach((s,k)=>{ s.el.classList.toggle('on', k===i); });
+  if(i>maxRead) maxRead=i;
+  for(let k=0;k<=maxRead;k++) SENTS[k].el.classList.add('read');
+  const el=SENTS[i].el, r=el.getBoundingClientRect();
+  if(r.top<90 || r.bottom>window.innerHeight-170) el.scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('progFill').style.width = Math.round((i+1)/N*100)+'%';
+  document.getElementById('count').textContent = 'Sentence '+(i+1)+' of '+N;
+}
+
+function speak(i){
+  if(!synth){ alert('Read-aloud is not available on this device.'); return; }
+  const my = ++token;
+  synth.cancel();
+  cur=i; mark(i); save();
+  setTimeout(()=>{
+    if(my!==token) return;
+    const u = new SpeechSynthesisUtterance(sayable(SENTS[i].text));
+    if(voice) u.voice=voice;
+    u.lang='en-US'; u.rate=+speedEl.value; u.pitch=1;
+    u.onend = ()=>{
+      if(my!==token || !playing) return;
+      if(cur < N-1){ speak(cur+1); }
+      else finish();
+    };
+    synth.speak(u);
+  },120);
+}
+function setPlaying(p){
+  playing=p;
+  playBtn.textContent = p ? '⏸ Pause' : (cur>0 ? '▶ Keep Reading' : '▶ Read to Me');
+}
+function startAt(i){ setPlaying(true); speak(i); }
+function pause(){ token++; if(synth) synth.cancel(); setPlaying(false); save(); }
+
+playBtn.onclick = ()=>{ playing ? pause() : startAt(cur); };
+document.getElementById('nextBtn').onclick = ()=>{ const n=Math.min(cur+1,N-1); playing ? speak(n) : (cur=n, mark(n), save()); };
+document.getElementById('backBtn').onclick = ()=>{ const n=Math.max(cur-1,0); playing ? speak(n) : (cur=n, mark(n), save()); };
+document.getElementById('restartBtn').onclick = ()=>{ restart(); };
+speedEl.oninput = ()=>{ save(); };
+speedEl.onchange = ()=>{ if(playing) speak(cur); };
+
+function restart(){
+  pause(); maxRead=-1; cur=0;
+  SENTS.forEach(s=>s.el.classList.remove('read','on'));
+  mark(0); save(); setPlaying(false);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function finish(){
+  setPlaying(false); finishedOnce=true; save();
+  document.getElementById('doneModal').classList.add('show');
+  confetti();
+}
+document.getElementById('againBtn').onclick=()=>{ document.getElementById('doneModal').classList.remove('show'); restart(); };
+document.getElementById('doneClose').onclick=()=>document.getElementById('doneModal').classList.remove('show');
+
+/* ---------- VOCAB CARD ---------- */
+const vcard=document.getElementById('vcard'); let vNow=null;
+document.addEventListener('click',e=>{
+  const v=e.target.closest('.v'); if(!v || !v.dataset.w) return;
+  e.stopPropagation();
+  const w=v.dataset.w, d=VOCAB[w]; vNow=w;
+  document.getElementById('vWord').textContent=w;
+  document.getElementById('vPr').textContent=d[1];
+  document.getElementById('vDef').textContent=d[2];
+  vcard.classList.add('show');
+});
+function hideVocab(){ vcard.classList.remove('show'); }
+document.getElementById('vClose').onclick=hideVocab;
+document.getElementById('vHear').onclick=()=>{
+  if(!synth||!vNow) return;
+  const wasPlaying=playing; if(wasPlaying) pause();
+  synth.cancel();
+  const u=new SpeechSynthesisUtterance(vNow+'. '+VOCAB[vNow][2]+'.');
+  if(voice) u.voice=voice; u.lang='en-US'; u.rate=+speedEl.value;
+  setTimeout(()=>synth.speak(u),120);
+};
+
+/* ---------- CONFETTI ---------- */
+function confetti(){
+  const c=document.getElementById('confetti'), x=c.getContext('2d');
+  c.width=innerWidth; c.height=innerHeight;
+  const cols=['#3f6b3a','#7fb35a','#ffe36b','#b98a55','#2f6db5','#e4572e','#f2a2c0'];
+  const P=Array.from({length:180},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,w:6+Math.random()*8,h:8+Math.random()*10,vx:-2+Math.random()*4,vy:2+Math.random()*4,r:Math.random()*6,vr:-.2+Math.random()*.4,col:cols[Math.random()*cols.length|0]}));
+  let t=0;
+  (function f(){
+    x.clearRect(0,0,c.width,c.height);
+    P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.04;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.col;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore();});
+    if(++t<260) requestAnimationFrame(f); else x.clearRect(0,0,c.width,c.height);
+  })();
+}
+
+/* ---------- START / RESUME ---------- */
+(function init(){
+  const st=load();
+  if(st.speed) speedEl.value=st.speed;
+  if(typeof st.maxRead==='number') maxRead=st.maxRead;
+  finishedOnce=!!st.done;
+  cur = (typeof st.idx==='number' && st.idx<N) ? st.idx : 0;
+  mark(cur);
+  if(cur>0){
+    document.getElementById('resumeText').textContent='You stopped at sentence '+(cur+1)+' of '+N+'. Want to keep reading where you left off?';
+    document.getElementById('resumeModal').classList.add('show');
+  }
+  setPlaying(false);
+})();
+document.getElementById('resumeYes').onclick=()=>{ document.getElementById('resumeModal').classList.remove('show'); startAt(cur); };
+document.getElementById('resumeNo').onclick=()=>{ document.getElementById('resumeModal').classList.remove('show'); restart(); };
+window.addEventListener('pagehide', ()=>{ save(); if(synth) synth.cancel(); });
+</script>
+</body>
+</html>
